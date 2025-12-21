@@ -1,0 +1,10 @@
+[project]
+name = "aw-watcher-outlook"
+version = "0.1.0"
+description = "ActivityWatch watcher for Outlook email subjects"
+requires-python = ">=3.10"
+
+[project.dependencies]
+aw-client = "*"
+aw-core = "*"
+pywin32 = "*"
