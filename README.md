@@ -1,7 +1,7 @@
 # Introduction
 Watcher for ActivityWatch which:
 - when Outlook is the active window (specifically a process called outlook.exe)
-- gets the name of the selected item, if name
+- gets the name of the selected item, if any
 - logs the name to ActivityWatch, along with the folder (inbox, sent, Calendar)
 
 This could be the email Subject, Calendar event title (both tested - other items might also show up).
@@ -9,7 +9,7 @@ This could be the email Subject, Calendar event title (both tested - other items
 Only works with Windows platform.
 
 # How to test
-1. Create a VirtualEnv
+1. Create and activate a VirtualEnv
 2. Clone the repo to the venv
 3. Install dependencies: `pip install aw-core aw-client pywin32`
 4. Optionally: `pip install pyinstaller`
@@ -48,7 +48,7 @@ This is useful especially if you have a "traditionally installed" AW setup.
 2. When tests are successful, run pyistaller: `pyinstaller .\aw-watcher-outlook.spec --clean --noconfirm`
 3. In the newly created `dist` directory, there is another directory called `aw-watcher-outlook`
 4. Copy this to the same location as the other watchers. In my case it is `C:\Users\USERNAME\AppData\Local\Programs\ActivityWatch\`
-5. (Unless AW does some cool stuff itself,) create the config file in `C:\Users\Steven Sultana\AppData\Local\activitywatch\activitywatch\aw-watcher-outlook\`
+5. (Unless AW does some cool stuff itself,) create the config file in `C:\Users\USERNAME\AppData\Local\activitywatch\activitywatch\aw-watcher-outlook\`
     ```
     # aw-watcher-outlook.toml
     [aw-watcher-outlook]
