@@ -11,11 +11,11 @@ def get_outlook_activity() -> dict:
         explorer = outlook.ActiveExplorer()
 
         if explorer is None:
-            return None
+            return {}
 
         selection = explorer.Selection
         if selection.Count != 1:
-            return None
+            return {}
 
         item = selection.Item(1)
 
@@ -25,12 +25,12 @@ def get_outlook_activity() -> dict:
         }
 
     except Exception:
-        return None
+        return {}
 
 
-def get_app_path(hwnd):
+def get_app_path(hwnd) -> str:
     """Get application path given hwnd."""
-    path = None
+    path = ""
 
     _, pid = win32process.GetWindowThreadProcessId(hwnd)
     process = win32api.OpenProcess(
@@ -45,12 +45,12 @@ def get_app_path(hwnd):
     return path
 
 
-def get_app_name(hwnd):
+def get_app_name(hwnd) -> str:
     """Get application filename given hwnd."""
     path = get_app_path(hwnd)
 
-    if path is None:
-        return None
+    if path == "":
+        return ""
 
     return os.path.basename(path)
 
@@ -58,6 +58,6 @@ def get_app_name(hwnd):
 def get_active_process_name() -> str:
     hwnd = ctypes.windll.user32.GetForegroundWindow()
     if not hwnd:
-        return None
+        return ""
 
     return get_app_name(hwnd)
