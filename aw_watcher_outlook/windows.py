@@ -1,5 +1,6 @@
 import ctypes
 import os
+import pywintypes
 import win32api
 import win32com.client
 import win32process
@@ -30,12 +31,23 @@ def get_outlook_activity() -> dict:
 
 def get_app_path(hwnd) -> str:
     """Get application path given hwnd."""
+    # The basic function without all the error handling is simple:
+    # 1. get process ID: _, pid = win32process.GetWindowThreadProcessId(hwnd)
+    # 2. open process to query info: process = win32api.OpenProcess(...)
+    # 3. get our requirement - the process filename: path = win32process.GetModuleFileNameEx(process, 0)
+
     path = ""
 
     _, pid = win32process.GetWindowThreadProcessId(hwnd)
-    process = win32api.OpenProcess(
-        0x0400, False, pid
-    )  # PROCESS_QUERY_INFORMATION = 0x0400
+
+    try:
+        process = win32api.OpenProcess(0x0400, False, pid)  # PROCESS_QUERY_INFORMATION = 0x0400
+    except pywintypes.error as e:
+        if e.strerror == 'Access is denied.':
+            # probably due to admin window - outlook is probably not admin.
+            return ""
+        else:
+            raise e
 
     try:
         path = win32process.GetModuleFileNameEx(process, 0)
