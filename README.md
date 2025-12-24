@@ -7,6 +7,7 @@ Watcher for ActivityWatch which:
 This could be the email Subject, Calendar event title (both tested - other items might also show up).
 
 Only works with Windows platform.
+Only tested with the "old" Outlook client.
 
 # How to test
 1. Create and activate a VirtualEnv
@@ -31,11 +32,13 @@ Only works with Windows platform.
 7. `config.py` is copied and amended from AFK.
 
 # How it works
-1. `__main__.py` loads the arguments and calls the main function in outlook.py
+1. `__main__.py` is the entry point and calls the main function in outlook.py
 2. The main function:
-    1. Initializes the client
-    2. Creates the bucket if needed
-    3. Starts the main loop
+    1. Loads the arguments
+    2. Initializing logging
+    3. Initializes the client
+    4. Creates the bucket if needed
+    5. Starts the main loop
 3. The main loop:
     1. Checks if the active process is `outlook.exe`
     2. Retrieves the item name
@@ -45,7 +48,7 @@ Only works with Windows platform.
 This is useful especially if you have a "traditionally installed" AW setup.
 
 1. Test as per the above.
-2. When tests are successful, run pyistaller: `pyinstaller .\aw-watcher-outlook.spec --clean --noconfirm`
+2. When tests are successful, run pyinstaller: `pyinstaller .\aw-watcher-outlook.spec --clean --noconfirm`
 3. In the newly created `dist` directory, there is another directory called `aw-watcher-outlook`
 4. Copy this to the same location as the other watchers. In my case it is `C:\Users\USERNAME\AppData\Local\Programs\ActivityWatch\`
 5. (Unless AW does some cool stuff itself,) create the config file in `C:\Users\USERNAME\AppData\Local\activitywatch\activitywatch\aw-watcher-outlook\`
