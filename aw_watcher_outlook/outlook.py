@@ -51,22 +51,30 @@ def main():
         current_state = {}  # use purely as helper for logging
         while True:
             try:
+                # get data
                 data = {}
-                outlook_active = get_active_process_name().lower() == "outlook.exe"
-                if outlook_active:
+                active_process = get_active_process_name()
+                if active_process.lower() == "outlook.exe":
                     data = get_outlook_activity()
-                logger.debug("Data:", data)
 
+                # purely logging
+                logger.debug("Data:", data)
                 if current_state != data:
                     logger.info(f"Changed state from {current_state} to {data}")
                     current_state = data
 
+                # send to server
                 if data != {}:
                     event = Event(
                         timestamp=datetime.now(timezone.utc),
                         data=data
                     )
-                    client.heartbeat(BUCKET_NAME, event, pulsetime=poll_interval * 2)
+                    client.heartbeat(
+                        BUCKET_NAME,
+                        event,
+                        pulsetime=poll_interval * 2,
+                        queued=True,
+                    )
 
                 time.sleep(poll_interval)
             except KeyboardInterrupt:
